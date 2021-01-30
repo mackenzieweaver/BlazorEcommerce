@@ -1,10 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Identity
-@using BlazorEcommerce.Data
-
 @inject IAuthorizationService AuthorizationService
+@using BlazorEcommerce.Data
 @inject UserManager<BecUser> UserManager
 
 <div class="sidebar">
@@ -29,6 +26,6 @@
     protected override async Task OnInitializedAsync()
     {
         var user = (await authenticationStateTask).User;
-        Name = (await UserManager.GetUserAsync(user)).FullName;
+        if(user.Identity.IsAuthenticated) Name = (await UserManager.GetUserAsync(user)).FullName;
     }
 }
