@@ -1,12 +1,19 @@
 ﻿@inherits LayoutComponentBase
 
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using BlazorEcommerce.Data
+
+@inject IAuthorizationService AuthorizationService
+@inject UserManager<BecUser> UserManager
+
 <div class="sidebar">
     <NavMenu />
 </div>
 
 <div class="main">
     <div class="top-row px-4 auth">
-        <LoginDisplay />
+        <LoginDisplay Name="@Name" />
         <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
     </div>
 
@@ -14,3 +21,14 @@
         @Body
     </div>
 </div>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    private string Name { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        var user = (await authenticationStateTask).User;
+        Name = (await UserManager.GetUserAsync(user)).FullName;
+    }
+}
