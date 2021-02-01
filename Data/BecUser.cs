@@ -18,5 +18,7 @@ namespace BlazorEcommerce.Data
         public string LastName { get; set; }
 
         public string FullName { get => FirstName + " " + LastName; }
+
+        public virtual ICollection<TodoItem> TodoItems { get; set; } = new HashSet<TodoItem>();
     }
 }
